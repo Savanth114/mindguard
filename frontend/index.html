@@ -783,59 +783,89 @@
               <p>Move sliders and click <strong>Analyze & Save</strong> to get a score.</p>
             </div>
             <div id="analysis-result" hidden>
-              <div class="analysis-score-row">
-                <div class="analysis-score-ring" id="analysis-score-ring">
-                  <span class="analysis-score-val" id="analysis-score-val">—</span>
+              <div class="analysis-score-header">
+                <div>
+                  <div class="analysis-score-label">Burnout Risk Score</div>
+                  <div id="analysis-score-val" class="analysis-score-value">...</div>
                 </div>
-                <div class="analysis-score-meta">
-                  <div class="synopsis-chip" id="analysis-band">—</div>
-                  <div class="synopsis-meta" id="analysis-summary">—</div>
+                <div id="analysis-band" class="chip">...</div>
+              </div>
+              <div class="analysis-score-ring-wrap">
+                <svg id="analysis-score-ring" class="analysis-score-ring" width="160" height="160"
+                  viewBox="0 0 160 160">
+                  <circle class="ring-track" cx="80" cy="80" r="70" />
+                  <circle id="analysis-score-indicator" class="ring-indicator" cx="80" cy="80" r="70" />
+                </svg>
+              </div>
+              <p id="analysis-summary" class="analysis-summary">...</p>
+              <h4>Recommendations</h4>
+              <ul id="analysis-recos" class="reco-list"></ul>
+              <div id="result"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- VIEW: Profile -->
+        <div id="dashboard-view-profile" class="dashboard-view" role="tabpanel"
+          aria-labelledby="dashboard-nav-profile">
+          <div class="view-header">
+            <h2>Profile & Settings</h2>
+            <p>Manage your account details and preferences.</p>
+          </div>
+          <div class="profile-grid">
+            <div class="profile-card">
+              <div class="profile-main">
+                <div id="profile-avatar" class="profile-avatar">...</div>
+                <div>
+                  <h3 id="profile-name">...</h3>
+                  <p id="profile-email">...</p>
                 </div>
               </div>
-              <h3 class="analysis-subtitle">Recommendations</h3>
-              <ul class="analysis-list" id="analysis-recos"></ul>
+              <div class="profile-details">
+                <div class="profile-detail-item">
+                  <span>Member Since</span>
+                  <strong id="profile-member-since">...</strong>
+                </div>
+                <div class="profile-detail-item">
+                  <span>Check-ins Logged</span>
+                  <strong id="profile-checkins">...</strong>
+                </div>
+                <div class="profile-detail-item">
+                  <span>Account Status</span>
+                  <strong class="chip low">Active</strong>
+                </div>
+              </div>
+            </div>
+            <div class="settings-card">
+              <h4>Account Details</h4>
+              <div class="setting-item">
+                <label for="profile-name-input">Full Name</label>
+                <input type="text" id="profile-name-input" value="Alex Johnson">
+              </div>
+              <div class="setting-item">
+                <label for="profile-email-value">Email</label>
+                <input type="email" id="profile-email-value" value="..." disabled>
+              </div>
+              <button type="button" class="btn-secondary">Update Profile</button>
+              <hr>
+              <h4>Notifications</h4>
+              <div class="setting-switch">
+                <label for="notif-checkin">Daily check-in reminders</label>
+                <input type="checkbox" id="notif-checkin" role="switch" checked>
+              </div>
+              <div class="setting-switch">
+                <label for="notif-insights">Weekly insight summaries</label>
+                <input type="checkbox" id="notif-insights" role="switch" checked>
+              </div>
             </div>
           </div>
-        </section>
+        </div>
+
       </div>
-      <div id="dashboard-view-profile" class="dashboard-view" hidden>
-        <section class="dashboard-welcome">
-          <h1>Profile</h1>
-          <p class="dashboard-sub">Your account and wellness settings.</p>
-        </section>
-        <section class="profile-section">
-          <div class="dashboard-card profile-card">
-            <div class="profile-header">
-              <div class="profile-avatar" id="profile-avatar">—</div>
-              <div class="profile-info">
-                <h2 class="profile-name" id="profile-name">—</h2>
-                <p class="profile-email" id="profile-email">—</p>
-                <span class="dashboard-badge">Active</span>
-              </div>
-            </div>
-            <div class="profile-details">
-              <div class="profile-row">
-                <span class="profile-label">Email</span>
-                <span class="profile-value" id="profile-email-value">—</span>
-              </div>
-              <div class="profile-row">
-                <span class="profile-label">Member since</span>
-                <span class="profile-value" id="profile-member-since">—</span>
-              </div>
-              <div class="profile-row">
-                <span class="profile-label">Check-ins completed</span>
-                <span class="profile-value" id="profile-checkins">0</span>
-              </div>
-            </div>
-          </div>
-          <div class="dashboard-card">
-            <h2>Wellness goals</h2>
-            <p>Sleep target: 7+ hours · Study balance: 4h · We'll help you track these.</p>
-          </div>
-        </section>
-      </div>
-    </main>
+    </div>
   </div>
+
+  
 
 
   <!-- JavaScript -->
