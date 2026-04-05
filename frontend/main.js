@@ -544,7 +544,7 @@
     return item.expected_outcome ? String(item.expected_outcome) : '';
   }
 
-  async function computeRisk(inputs) {
+    async function analyzeData(inputs) {
     const moodLabel = String(inputs.mood || 'average').toLowerCase();
     const moodRiskMap = { excellent: 0.1, good: 0.25, average: 0.5, bad: 0.85 };
     try {
@@ -553,9 +553,13 @@
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(inputs)
       });
-      if (!resp.ok) throw new Error('API returned ' + resp.status);
+      if (!resp.ok) {
+        console.error('Analysis API failed:', resp.status);
+        throw new Error(`API error: ${resp.status}`);
+      }
       const data = await resp.json();
-      
+      console.log(data);
+
       const score = Math.round(data.risk_score);
       let band = 'Low';
       if (data.risk_category === 'moderate') band = 'Moderate';
@@ -569,15 +573,19 @@
           : 'High strain detected. Prioritize recovery and reach out for support if needed.';
       const recos = Array.isArray(data.recommendations) ? data.recommendations.slice(0, 5) : [];
 
-      return {
+      const result = {
         score,
         band,
         topDriver,
         summary,
         recos: recos.length ? recos : buildFallbackRecommendations(inputs, topDriver, band)
       };
+
+      displayResult(result);
+      return result;
+
     } catch (e) {
-      console.error('API call failed, using local fallback:', e);
+      console.error("Error:", e);
       // Normalize: higher = more risk (0..1)
       const study = clamp(Number(inputs.studyHours || 0) / 12, 0, 1);
       const extra = clamp(Number(inputs.extracurricularHours || 0) / 6, 0, 1);
@@ -594,36 +602,42 @@
         0.15 * sleepLow +
         0.14 * physicalLow +
         0.16 * extra;
+      const score = Math.round(score01 * 100);
 
-      const score = Math.round(clamp(score01, 0, 1) * 100);
-      const band = score < 35 ? 'Low' : score < 70 ? 'Moderate' : 'High';
+      let band = 'Low';
+      if (score > 65) band = 'High';
+      else if (score > 35) band = 'Moderate';
 
       const drivers = [
-        { key: 'Screen time', v: screen },
-        { key: 'Study load', v: study },
-        { key: 'Sleep deficit', v: sleepLow },
-        { key: 'Mood state', v: moodRisk },
-        { key: 'Low physical activity', v: physicalLow },
-        { key: 'Extracurricular load', v: extra }
-      ].sort((a, b) => b.v - a.v);
+        { name: 'Screen Time', val: screen },
+        { name: 'Study Load', val: study },
+        { name: 'Mood', val: moodRisk },
+        { name: 'Sleep', val: sleepLow },
+        { name: 'Activity', val: physicalLow },
+        { name: 'Commitments', val: extra }
+      ].sort((a, b) => b.val - a.val);
+      const topDriver = drivers[0].name;
 
-      const topDriver = drivers[0].key;
+      const summary = band === 'Low'
+        ? 'You’re trending stable. Keep a consistent routine.'
+        : band === 'Moderate'
+          ? 'Some signals suggest rising strain. Small adjustments can help.'
+          : 'High strain detected. Prioritize recovery and reach out for support if needed.';
 
-      const summary =
-        band === 'Low'
-          ? 'You’re trending stable. Keep a consistent routine.'
-          : band === 'Moderate'
-            ? 'Some signals suggest rising strain. Small adjustments can help.'
-            : 'High strain detected. Prioritize recovery and reach out for support if needed.';
-
-      return {
+      const result = {
         score,
         band,
         topDriver,
         summary,
         recos: buildFallbackRecommendations(inputs, topDriver, band)
       };
+      displayResult(result);
+      return result;
     }
+  }
+
+  function displayResult(result) {
+    renderAnalysisResult(result);
   }
 
   function setChip(el, band) {
