@@ -112,7 +112,8 @@ MindGuard AI uses a hybrid approach:
 - JavaScript  
 
 ### Backend
-- Python  
+- Python
+- fastapi
 
 ### Machine Learning
 - Scikit-learn  
