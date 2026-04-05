@@ -9,8 +9,8 @@
 
 | Name                    | Role                                                                    |
 |-------------------------|-------------------------------------------------------------------------|
-| Savanth G               | AI/ML Development (Model Design, Recommendation Engine & Risk Scoring)  |
-| S MOHAMMAD PARDEEN      | Backend & Frontend Integration , API Development                        |
+| Savanth G (Team Lead)   | AI/ML Development (Model Design, Recommendation Engine & Risk Scoring)  |
+| S MOHAMMAD PARDEEN      | Backend & Frontend Integration, API Development                        |
 | Vikas GJ                | Front-End Development                                                   |
 | N NAUMAN PASHA          | Data Processing & Data Management                                       |
 
